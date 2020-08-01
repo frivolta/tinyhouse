@@ -8,10 +8,12 @@
     "seed": "ts-node temp/seed.ts"
   },
   "dependencies": {
+    "@types/lodash.merge": "^4.6.6",
     "apollo-server-express": "^2.16.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
+    "lodash.merge": "^4.6.2",
     "mongodb": "^3.6.0"
   },
   "devDependencies": {
