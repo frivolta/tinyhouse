@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { server } from "../lib/api";
+import { useQuery } from "../lib/api/useQuery";
 import {
   ListingsData,
   DeleteListingData,
@@ -34,29 +35,46 @@ interface Props {
 }
 
 export const Listings: FC<Props> = (props) => {
-  const fetchListings = async () => {
-    const { data } = await server.fetch<ListingsData>({ query: LISTINGS });
-    console.log(data);
-  };
+  const { data, loading, refetch, error } = useQuery<ListingsData>(LISTINGS);
 
-  const deleteListings = async () => {
-    const { data } = await server.fetch<
-      DeleteListingData,
-      DeleteListingVariables
-    >({
+  const deleteListings = async (id: string) => {
+    await server.fetch<DeleteListingData, DeleteListingVariables>({
       query: DELETE_LISTING,
       variables: {
-        id: "5f253154a1265fe1876390d0",
+        id,
       },
     });
-    console.log(data);
+
+    refetch();
   };
+
+  const listings = data ? data.listings : null;
+
+  const listingsList = listings ? (
+    <ul>
+      {listings.map((listing) => {
+        return (
+          <li key={listing.id}>
+            {listing.title}
+            <button onClick={() => deleteListings(listing.id)}>Delete</button>
+          </li>
+        );
+      })}
+    </ul>
+  ) : null;
+
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
+
+  if (error) {
+    return <h2>Oops something went wrong!</h2>;
+  }
 
   return (
     <div>
       <h2>{props.title}</h2>
-      <button onClick={fetchListings}>Query Listings</button>
-      <button onClick={deleteListings}>Delete Listings</button>
+      {listingsList}
     </div>
   );
 };
