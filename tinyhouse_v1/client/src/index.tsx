@@ -5,17 +5,16 @@ import { ApolloProvider } from "react-apollo";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Listings } from "./sections";
+import "./styles/index.css";
 
 const client = new ApolloClient({
   uri: "/api",
 });
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <Listings title="TinyHouse Listings" />
-    </ApolloProvider>
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <Listings title="TinyHouse Listings" />
+  </ApolloProvider>,
   document.getElementById("root")
 );
 
