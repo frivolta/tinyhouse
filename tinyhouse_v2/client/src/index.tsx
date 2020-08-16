@@ -12,9 +12,10 @@ import {
   NotFound,
   User,
   LogIn,
+  AppHeader,
 } from "./sections";
 import "./styles/index.css";
-import { Layout } from "antd";
+import { Layout, Affix } from "antd";
 import { Viewer } from "./lib/types";
 
 const client = new ApolloClient({
@@ -31,11 +32,13 @@ const initialViewer: Viewer = {
 
 const App = () => {
   const [viewer, setViewer] = useState<Viewer>(initialViewer);
-  console.log(viewer);
 
   return (
     <Router>
       <Layout id="app">
+        <Affix>
+          <AppHeader viewer={viewer} />
+        </Affix>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route
