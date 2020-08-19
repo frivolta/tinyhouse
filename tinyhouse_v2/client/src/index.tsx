@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ApolloClient from "apollo-boost";
@@ -15,8 +15,16 @@ import {
   AppHeader,
 } from "./sections";
 import "./styles/index.css";
-import { Layout, Affix } from "antd";
+import { Layout, Affix, Spin } from "antd";
 import { Viewer } from "./lib/types";
+import { LOGIN } from "./lib/graphql/mutations/LogIn";
+import { useMutation } from "@apollo/react-hooks";
+import { AppHeaderSkeleton } from "./lib/components/AppHeaderSkeleton";
+import {
+  LogIn as LogInData,
+  LogInVariables,
+} from "./lib/graphql/mutations/LogIn/__generated__/LogIn";
+import { ErrorBanner } from "./lib/components";
 
 const client = new ApolloClient({
   uri: "/api",
@@ -32,12 +40,40 @@ const initialViewer: Viewer = {
 
 const App = () => {
   const [viewer, setViewer] = useState<Viewer>(initialViewer);
+  const [logIn, { error }] = useMutation<LogInData, LogInVariables>(LOGIN, {
+    onCompleted: (data) => {
+      if (data && data.logIn) {
+        setViewer(data.logIn);
+      }
+    },
+  });
+
+  const loginRef = useRef(logIn);
+  useEffect(() => {
+    loginRef.current();
+  }, []);
+
+  // Instead of using useMutation loading, we know didRequest is true after the first request perform
+  if (!viewer.didRequest && !error) {
+    return (
+      <Layout className="app-skeleton">
+        <AppHeaderSkeleton />
+        <div className="app-skeleton__spin-section">
+          <Spin size="large" tip="Launching TinyHouse" />
+        </div>
+      </Layout>
+    );
+  }
+  const logInErrorBannerElement = error ? (
+    <ErrorBanner description="We weren't able to verify if you logged in, please try again later..." />
+  ) : null;
 
   return (
     <Router>
       <Layout id="app">
+        {logInErrorBannerElement}
         <Affix>
-          <AppHeader viewer={viewer} />
+          <AppHeader viewer={viewer} setViewer={setViewer} />
         </Affix>
         <Switch>
           <Route exact path="/" component={Home} />
