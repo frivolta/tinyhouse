@@ -137,7 +137,6 @@ export const viewerResolvers: IResolvers = {
           : await logInViaCookie(token, db, req, res);
 
         if (!viewer) {
-          console.log("no viewer");
           return {
             didRequest: true,
           };
