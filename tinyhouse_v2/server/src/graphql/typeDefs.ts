@@ -34,6 +34,7 @@ export const typeDefs = gql`
     city: String!
     bookings(limit: Int!, page: Int!): Bookings
     bookingsIndex: String!
+    address: String!
     price: Int!
     numOfGuests: Int!
   }
