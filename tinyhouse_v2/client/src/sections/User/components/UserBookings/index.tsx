@@ -21,41 +21,40 @@ export const UserBookings = ({
   const total = userBookings ? userBookings.total : null;
   const result = userBookings ? userBookings.result : null;
 
-  const userBookingsList =
-    total && result ? (
-      <List
-        grid={{ gutter: 8, xs: 1, sm: 2, lg: 4 }}
-        dataSource={result}
-        locale={{ emptyText: "User doesn't have any listings yet!" }}
-        pagination={{
-          position: "top",
-          current: bookingsPage,
-          total,
-          defaultPageSize: limit,
-          hideOnSinglePage: true,
-          showLessItems: true,
-          onChange: (page: number) => setBookingsPage(page),
-        }}
-        renderItem={(userBooking) => {
-          const bookingsHistory = (
-            <div className="user-bookings__booking-history">
-              <div>
-                Check in: <Text strong>{userBooking.checkIn}</Text>
-              </div>
-              <div>
-                Check out: <Text strong>{userBooking.checkOut}</Text>
-              </div>
+  const userBookingsList = userBookings ? (
+    <List
+      grid={{ gutter: 8, xs: 1, sm: 2, lg: 4 }}
+      dataSource={result ? result : undefined}
+      locale={{ emptyText: "User doesn't have any listings yet!" }}
+      pagination={{
+        position: "top",
+        current: bookingsPage,
+        total: total ? total : undefined,
+        defaultPageSize: limit,
+        hideOnSinglePage: true,
+        showLessItems: true,
+        onChange: (page: number) => setBookingsPage(page),
+      }}
+      renderItem={(userBooking) => {
+        const bookingsHistory = (
+          <div className="user-bookings__booking-history">
+            <div>
+              Check in: <Text strong>{userBooking.checkIn}</Text>
             </div>
-          );
-          return (
-            <List.Item>
-              {bookingsHistory}
-              <ListingCard listing={userBooking.listing} />
-            </List.Item>
-          );
-        }}
-      ></List>
-    ) : null;
+            <div>
+              Check out: <Text strong>{userBooking.checkOut}</Text>
+            </div>
+          </div>
+        );
+        return (
+          <List.Item>
+            {bookingsHistory}
+            <ListingCard listing={userBooking.listing} />
+          </List.Item>
+        );
+      }}
+    ></List>
+  ) : null;
 
   const userBookingsElement = userBookingsList ? (
     <div className="user-listings">
