@@ -97,7 +97,7 @@ const App = () => {
           />
           <Route exact path="/host" component={Host} />
           <Route exact path="/listing" component={Listing} />
-          <Route exact path="/listings/:id" component={Listings} />
+          <Route exact path="/listing/:id" component={Listing} />
           <Route exact path="/listings/:location" component={Listings} />
           <Route
             exact

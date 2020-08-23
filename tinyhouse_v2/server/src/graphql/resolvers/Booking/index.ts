@@ -8,7 +8,7 @@ export const bookingResolvers: IResolvers = {
     },
     listing: (
       booking: Booking,
-      _args: {},
+      _args: Record<string, unknown>,
       { db }: { db: Database }
     ): Promise<Listing | null> => {
       return db.listings.findOne({ _id: booking.listing });
