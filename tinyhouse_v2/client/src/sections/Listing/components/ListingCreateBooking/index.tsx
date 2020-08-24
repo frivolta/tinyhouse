@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Button, Card, DatePicker, Divider, Tooltip, Typography } from "antd";
+import { Button, Card, DatePicker, Divider, Typography } from "antd";
 import moment, { Moment } from "moment";
 import { formatListingPrice } from "../../../../lib/utils";
 import { displayErrorMessage } from "../../../../lib/utils/index";
