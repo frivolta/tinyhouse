@@ -99,6 +99,7 @@ const App = () => {
           <Route exact path="/listing" component={Listing} />
           <Route exact path="/listing/:id" component={Listing} />
           <Route exact path="/listings/:location" component={Listings} />
+          <Route exact path="/listings" component={Listings} />
           <Route
             exact
             path="/user/:id"

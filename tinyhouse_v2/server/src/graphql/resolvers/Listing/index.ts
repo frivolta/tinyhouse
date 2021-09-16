@@ -45,12 +45,14 @@ export const listingResolvers: IResolvers = {
       try {
         const query: ListingsQuery = {};
         const data: ListingsData = {
+          region: null,
           total: 0,
           result: [],
         };
 
         if (location) {
           const { country, admin, city } = await Google.geocode(location);
+          console.log("after await");
           if (city) query.city = city;
           if (admin) query.admin = admin;
           if (country) {

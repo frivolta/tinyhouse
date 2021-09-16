@@ -58,12 +58,15 @@ export const Google = {
     return { user: data };
   },
   geocode: async (address: string) => {
-    const res = await maps.geocode({ address }).asPromise();
-
-    if (res.status < 200 || res.status > 299) {
-      throw new Error("failed to geocode address");
+    try {
+      const response = await maps.geocode({ address }).asPromise();
+      if (response.status < 200 || response.status > 299) {
+        throw new Error("Failed to geocode address");
+      }
+      return parseAddress(response.json.results[0].address_components);
+    } catch (err) {
+      const msg = err.json?.error_message || err.message;
+      throw new Error(`An error occurred during geocoding: ${msg}`);
     }
-
-    return parseAddress(res.json.results[0].address_components);
   },
 };
